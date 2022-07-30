@@ -9,7 +9,8 @@ const cors = require("cors");
 const { default: mongoose } = require("mongoose");
 const getTodos = require("./controller/getTodos");
 const createTodo = require("./controller/createTodo");
-const deleteTodo = require("./controller/deleteTodo")
+const deleteTodo = require("./controller/deleteTodo");
+const pagination = require("./controller/pagination.js");
 
 const todoModel = mongoose.model("Todo");
 
@@ -36,6 +37,8 @@ app.delete("/delete/:id", deleteTodo);
 app.post("/create", createTodo);
 
 app.use("/todos", getTodos);
+
+app.use("/getData/:pageNumber", pagination);
 
 app.use("/", (req, res) => {
   res.write("<p>{statusCode: 200 }</p>");

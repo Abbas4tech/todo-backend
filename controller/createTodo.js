@@ -5,6 +5,7 @@ const createTodo = async (req, res) => {
   console.log("Called me");
   const newTodo = new Todo();
   newTodo.title = req.body.title;
+  console.log(Todo.length);
   await newTodo.save();
   Todo.find((rest, doc) => {
     res.send(JSON.stringify(doc));
