@@ -1,8 +1,42 @@
 const express = require("express");
+const connection = require("./connection/connection.js");
 const app = express();
-const mongoose = require("mongoose");
+const path = require("path");
+const expressHandlerBars = require("express-handlebars");
+const bodyParser = require("body-parser");
+const http = require("http");
+const cors = require("cors");
+const { default: mongoose } = require("mongoose");
+const getTodos = require("./controller/getTodos");
 
-mongoose.connect("mongodb://localhost:27017/My-Todos", (err) => {
-  if (err) console.log("Error occured");
-  else console.log("Database connected");
+const todoModel = mongoose.model("Todo");
+
+let corsOption = {
+  origin: "http://localhost:4200",
+};
+
+todoModel.find((err, docs) => {
+  console.log(docs);
+});
+
+app.use(cors(corsOption));
+
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+
+app.use(bodyParser.json());
+
+app.use("/todos", getTodos);
+
+app.use("/", (req, res) => {
+  res.write("<p>{statusCode: 200 }</p>");
+  res.end();
+});
+
+const server = http.createServer(app);
+server.listen(3000, (req, res) => {
+  console.log("Your server is running on 3000");
 });
