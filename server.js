@@ -8,6 +8,8 @@ const http = require("http");
 const cors = require("cors");
 const { default: mongoose } = require("mongoose");
 const getTodos = require("./controller/getTodos");
+const createTodo = require("./controller/createTodo");
+const deleteTodo = require("./controller/deleteTodo")
 
 const todoModel = mongoose.model("Todo");
 
@@ -28,6 +30,10 @@ app.use(
 );
 
 app.use(bodyParser.json());
+
+app.delete("/delete/:id", deleteTodo);
+
+app.post("/create", createTodo);
 
 app.use("/todos", getTodos);
 
